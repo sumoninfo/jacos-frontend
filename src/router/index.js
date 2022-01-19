@@ -1,29 +1,56 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue         from 'vue'
+import Router      from 'vue-router'
+import NotFound    from '@/components/NotFound.vue';
+import WebLayout   from "@/views/web/Layout";
+import webRoutes   from "@/views/web/_routes";
+//Admin Section
+import AdminRoutes from "@/views/admin/_routes";
+import AdminLayout from "@/views/admin/Layout";
+//Auth Section
+import AuthRoutes  from "@/views/auth/_routes";
 
-Vue.use(VueRouter)
+Vue.use(Router);
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
-})
+const router = new Router({
+    mode: 'history',
+    base: '/',
+    scrollBehavior() {
+        return {x: 0, y: 0}
+    },
+    routes: [
+        //Frontend routing
+        {
+            path     : '/',
+            name     : 'website',
+            component: WebLayout,
+            children : webRoutes
+        },
+        //Auth Section routing
+        {
+            path     : '/',
+            component: WebLayout,
+            children : AuthRoutes
+        },
+        //Admin Section routing
+        {
+            path     : '/',
+            component: AdminLayout,
+            children : AdminRoutes,
+            meta     : {
+                requireAuth: true,
+            }
+        },
+        //NotFound
+        {
+            path     : '*',
+            name     : 'Not Found',
+            component: NotFound,
+            meta     : {
+                title: 'Not Found'
+            }
+        },
+    ],
+});
 
 export default router
+
