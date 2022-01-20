@@ -1,10 +1,12 @@
-import axios from 'axios';
+import axios      from 'axios';
 import JwtService from "./jwt.service";
 
 const ApiService = {
     init() {
-        axios.defaults.baseURL = process.env.VUE_APP_API_URL + "/api/v1/";
+        axios.defaults.baseURL                         = process.env.VUE_APP_API_URL + "/api/v1/";
         axios.defaults.headers.common["Authorization"] = `Bearer ${JwtService.getToken()}`;
+        axios.defaults.headers.common["app_key"]       = process.env.VUE_APP_KEY;
+        axios.defaults.headers.common["app_secret"]    = process.env.VUE_APP_SECRET;
     },
 
     get(resource, params) {
