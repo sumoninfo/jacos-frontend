@@ -23,6 +23,9 @@
             <div class="col-12">
               <button type="submit" class="btn btn-primary w-100 text-light">Login</button>
             </div>
+            <div v-if="errors_message" class="invalid-feedback d-block text-center">
+              {{ errors_message }}
+            </div>
           </form>
         </div>
       </div>
@@ -38,23 +41,26 @@ import NotificationService from "@/services/notification.service";
 export default {
   name   : "Login",
   data   : () => ({
-    form  : {
+    form          : {
       email   : "",
       password: ""
     },
-    errors: [],
+    errors        : [],
+    errors_message: '',
   }),
   methods: {
     login() {
       ApiService.post('/login', this.form).then((res) => {
-        this.errors = []
+        this.errors         = [];
+        this.errors_message = '';
         JwtService.saveToken(res.data.access_token);
         localStorage.setItem("expires_at", res.data.expires_at);
         ApiService.init();
         this.$router.push({name: "AdminDashboard"});
         NotificationService.success(res.data.message);
       }).catch(error => {
-        this.errors = error.response.data.errors;
+        this.errors_message = error.response.data.message;
+        this.errors         = error.response.data.errors;
         NotificationService.error(error.response.data.message);
       });
     }

@@ -43,8 +43,6 @@ router.beforeEach((to, from, next) => {
                 JwtService.destroyToken();
                 next({name: 'LoginPage'})
             })
-            // TODO : need to check the token on each route change
-            // next();
         }
     }
 
@@ -63,10 +61,8 @@ router.beforeEach((to, from, next) => {
 
 
 new Vue({
-    router, store, computed: {
-        user() {
-            return this.$store.state.auth.user;
-        },
-    }, render              : h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app');
 
