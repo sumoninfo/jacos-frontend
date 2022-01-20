@@ -8,7 +8,6 @@
           <router-view ref="admin-layout"/>
         </main>
       </div>
-
     </div>
   </div>
 </template>

@@ -4,7 +4,6 @@ import router from './router'
 import store  from './store'
 import './scss/main.scss'
 import 'bootstrap'
-import './globalComponents'
 // Filters
 import './filters/filters.js'
 //sweetalert2
@@ -34,8 +33,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requireAuth)) {
         if (!JwtService.getToken()) {
             next({
-                name  : 'login',
-                params: {nextUrl: to.fullPath}
+                name: 'LoginPage', params: {nextUrl: to.fullPath}
             })
         } else {
             ApiService.get('/user').then(response => {
@@ -43,16 +41,17 @@ router.beforeEach((to, from, next) => {
                 next()
             }).catch(error => {
                 JwtService.destroyToken();
-                next({name: 'login'})
+                next({name: 'LoginPage'})
             })
             // TODO : need to check the token on each route change
             // next();
         }
     }
 
-    if (to.name == 'login') {
+    //if user logged and user state login page then redirect to dashboard
+    if (to.name == 'LoginPage' || to.name == 'RegisterPage') {
         if (JwtService.getToken()) {
-            next({name: 'adminDashboard'});
+            next({name: 'AdminDashboard'});
         }
     }
 
@@ -64,13 +63,10 @@ router.beforeEach((to, from, next) => {
 
 
 new Vue({
-    router,
-    store,
-    computed: {
+    router, store, computed: {
         user() {
             return this.$store.state.auth.user;
         },
-    },
-    render  : h => h(App)
+    }, render              : h => h(App)
 }).$mount('#app');
 

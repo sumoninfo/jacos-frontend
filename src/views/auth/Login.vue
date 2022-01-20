@@ -36,8 +36,8 @@ import JwtService          from "@/services/jwt.service";
 import NotificationService from "@/services/notification.service";
 
 export default {
-  name: "Login",
-  data: () => ({
+  name   : "Login",
+  data   : () => ({
     form  : {
       email   : "",
       password: ""
@@ -48,15 +48,14 @@ export default {
     login() {
       ApiService.post('/login', this.form).then((res) => {
         this.errors = []
-        JwtService.saveToken(res.data.data.access_token);
-        localStorage.setItem("expires_at", res.data.data.expires_at);
+        JwtService.saveToken(res.data.access_token);
+        localStorage.setItem("expires_at", res.data.expires_at);
         ApiService.init();
         this.$router.push({name: "AdminDashboard"});
         NotificationService.success(res.data.message);
       }).catch(error => {
-        console.log(error)
-        // this.errors = error.response.data.errors;
-        // NotificationService.error(error.response.data.message);
+        this.errors = error.response.data.errors;
+        NotificationService.error(error.response.data.message);
       });
     }
   }

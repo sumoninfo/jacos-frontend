@@ -2,27 +2,18 @@ import ApiService from "@/services/api.service";
 
 export default {
     namespaced: true,
-    // module assets
-    state: () => ({
+    state    : () => ({
         user: {},
-        permissions: {},
-        auth_role: {},
-        loading_user: true
     }),
-    getters: {
+    getters  : {
         getUserFromGetters(state) {
             return state.user
-        },
-        getPermissionsFromGetters(state) {
-            return state.permissions
         }
     },
-    actions: {
+    actions  : {
         getUser(context) {
             ApiService.get('/user').then(response => {
                 context.commit("GETUSER", response.data.data);
-                context.commit("GETPERMISSIONS", response.data.data.permissions);
-                context.commit("AUTHROLE", response.data.data.left_menu_component);
             }).catch(error => {
                 console.log(error, 'error')
             }).finally(() => {
@@ -33,15 +24,6 @@ export default {
     mutations: {
         GETUSER(state, data) {
             return state.user = data
-        },
-        GETPERMISSIONS(state, data) {
-            return state.permissions = data
-        },
-        AUTHROLE(state, data) {
-            return state.auth_role = data
-        },
-        LOADER(state, data) {
-            return state.loading_user = data
         }
     },
 }

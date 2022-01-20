@@ -8,12 +8,6 @@
             Dashboard
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link :to="{name:'UserList'}" class="nav-link" href="#">
-            <span data-feather="file"></span>
-            Users
-          </router-link>
-        </li>
       </ul>
     </div>
   </nav>

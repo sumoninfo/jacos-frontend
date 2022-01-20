@@ -26,9 +26,16 @@
             </li>
           </ul>
           <form class="d-flex">
-            <router-link :to="{name:'LoginPage'}" class="btn btn-outline-success m-2" type="submit">Login</router-link>
-            <router-link :to="{name:'RegisterPage'}" class="btn btn-outline-primary m-2" type="submit">Register
-            </router-link>
+            <template v-if="user.id">
+              <router-link :to="{name:'AdminDashboard'}" class="btn btn-outline-success m-2" type="submit">Dashboard
+              </router-link>
+            </template>
+            <template v-else>
+              <router-link :to="{name:'LoginPage'}" class="btn btn-outline-success m-2" type="submit">Login
+              </router-link>
+              <router-link :to="{name:'RegisterPage'}" class="btn btn-outline-primary m-2" type="submit">Register
+              </router-link>
+            </template>
           </form>
         </div>
       </div>
@@ -37,6 +44,15 @@
 </template>
 
 <script>
-export default {};
+import {mapState} from "vuex";
+
+export default {
+  name    : "Navbar",
+  computed: {
+    ...mapState({
+      user: state => state.auth.user
+    }),
+  },
+};
 </script>
 

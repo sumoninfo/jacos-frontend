@@ -6,7 +6,7 @@
           <form @submit.prevent="register()" class="needs-validation" novalidate>
             <h3 class="text-center mb-4 text-primary">Register</h3>
             <div class="mb-3">
-              <input v-model="form.name" type="text" class="form-control text-center"
+              <input v-model="form.name" type="text" class="form-control "
                      :class="{ 'is-invalid': errors['name'] }"
                      id="name" required placeholder="NAME">
               <div v-if="errors['name']" class="invalid-feedback">
@@ -14,18 +14,57 @@
               </div>
             </div>
             <div class="mb-3">
-              <input v-model="form.email" type="email" class="form-control text-center"
+              <input v-model="form.email" type="email" class="form-control "
                      :class="{ 'is-invalid': errors['email'] }"
-                     id="email" required placeholder="USERNAME">
+                     id="email" required placeholder="EMAIL">
               <div v-if="errors['email']" class="invalid-feedback">
                 {{ errors['email'][0] }}
               </div>
             </div>
             <div class="mb-3">
-              <input v-model="form.password" type="password" class="form-control text-center"
+              <input v-model="form.phone" type="number" class="form-control "
+                     :class="{ 'is-invalid': errors['phone'] }"
+                     id="phone" required placeholder="PHONE">
+              <div v-if="errors['phone']" class="invalid-feedback">
+                {{ errors['phone'][0] }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <select :class="{ 'is-invalid': errors['gender'] }" id="gender" v-model="form.gender" type="number"
+                      class="form-control ">
+                <option value="">Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <div v-if="errors['gender']" class="invalid-feedback">
+                  {{ errors['gender'][0] }}
+                </div>
+              </select>
+            </div>
+            <div class="mb-3">
+              <DatePickerComponent title="SELECT DATE OF BIRTH" v_model="date_of_birth"/>
+            </div>
+            <div class="mb-3">
+              <textarea v-model="form.address" class="form-control "
+                        :class="{ 'is-invalid': errors['address'] }"
+                        id="address" placeholder="Address"></textarea>
+              <div v-if="errors['address']" class="invalid-feedback">
+                {{ errors['address'][0] }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <input v-model="form.password" type="password" class="form-control "
                      :class="{ 'is-invalid': errors['password'] }" id="password" required placeholder="PASSWORD">
               <div v-if="errors['password']" class="invalid-feedback">
                 {{ errors['password'][0] }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <input v-model="form.confirm_password" type="password" class="form-control "
+                     :class="{ 'is-invalid': errors['confirm_password'] }" id="confirm_password" required
+                     placeholder="CONFIRM PASSWORD">
+              <div v-if="errors['confirm_password']" class="invalid-feedback">
+                {{ errors['confirm_password'][0] }}
               </div>
             </div>
             <div class="col-12">
@@ -42,14 +81,22 @@
 import ApiService          from "@/services/api.service";
 import JwtService          from "@/services/jwt.service";
 import NotificationService from "@/services/notification.service";
+import DatePickerComponent from "@/components/picker/DatePicker";
 
 export default {
-  name   : "Register",
+  name      : "Register",
+  components: {DatePickerComponent},
+
   data   : () => ({
     form  : {
-      name    : "",
-      email   : "",
-      password: ""
+      name            : "",
+      email           : "",
+      phone           : "",
+      date_of_birth   : "",
+      gender          : "",
+      address         : "",
+      password        : "",
+      confirm_password: ""
     },
     errors: [],
   }),
@@ -63,9 +110,8 @@ export default {
         this.$router.push({name: "AdminDashboard"});
         NotificationService.success(res.data.message);
       }).catch(error => {
-        console.log(error)
-        // this.errors = error.response.data.errors;
-        // NotificationService.error(error.response.data.message);
+        this.errors = error.response.data.errors;
+        NotificationService.error(error.response.data.message);
       });
     }
   }
