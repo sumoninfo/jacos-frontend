@@ -15,6 +15,7 @@
               <p><strong>Date of birth: </strong> {{ user.date_of_birth | dateFormat }} </p>
               <p><strong>Address: </strong> {{ user.address }} </p>
               <p><strong>Gender: </strong> {{ user.gender }} </p>
+              <p><strong>Created At: </strong> {{ user.created_at | dateFormat }} </p>
             </div>
           </div>
         </div>
