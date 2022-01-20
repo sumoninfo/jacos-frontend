@@ -1,19 +1,21 @@
 # jacos-frontend
 
-## Project setup
-```
-npm install
-```
+## Installation
+
+### Clone the repository
+
+    git clone https://github.com/sumoninfo/jacos-frontend
+
+### Switch to the repo folder
+
+    cd jacos-frontend
+
+### Copy the example env file and make the required configuration changes in the .env file
+
+    cp .env.example .env
+
+### Project setup
+    npm install 
 
 ### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+    npm run serve  
